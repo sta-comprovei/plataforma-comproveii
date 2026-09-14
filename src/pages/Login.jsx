@@ -53,12 +53,13 @@ export default function Login() {
         <div className="login-brand">
           <img src={comproveiLogo} alt="COMPROVEI by nstech" />
           <span className="login-brand-transition">agora é</span>
-          <span className="login-brand-name">TNS Gestão de Entregas</span>
+          <span className="login-brand-name">Rastreamento de Reentrega</span>
+        <span className="login-brand-by">By Giovanna Lopes · Comprovei Entregas</span>
         </div>
 
         <div className="login-heading">
           <h1>Bem-vindo de volta</h1>
-          <p>Faça login para acessar a plataforma TNS Gestão de Entregas.</p>
+          <p>Faça login para acessar a plataforma Rastreamento de Reentrega.</p>
         </div>
 
         <form className="login-form" onSubmit={handleSubmit} noValidate>
@@ -160,7 +161,8 @@ function RecuperarSenhaView({ onVoltar, emailInicial }) {
         <div className="login-brand">
           <img src={comproveiLogo} alt="COMPROVEI by nstech" />
           <span className="login-brand-transition">agora é</span>
-          <span className="login-brand-name">TNS Gestão de Entregas</span>
+          <span className="login-brand-name">Rastreamento de Reentrega</span>
+        <span className="login-brand-by">By Giovanna Lopes · Comprovei Entregas</span>
         </div>
 
         <div className="login-heading">

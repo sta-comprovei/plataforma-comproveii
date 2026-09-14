@@ -466,3 +466,32 @@ export function IconEye2(props) {
     </svg>
   )
 }
+
+export function IconPaperclip(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M21.44 11.05 12.5 20a5 5 0 0 1-7-7l9-9a3.5 3.5 0 0 1 5 5l-9 9a1.5 1.5 0 0 1-2-2l8-8" />
+    </svg>
+  )
+}
+
+export function IconImage(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <path d="m21 15-5-5L5 21" />
+    </svg>
+  )
+}
+
+export function IconPackageSearch(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M3 7h13v10H3z" />
+      <path d="M16 10h3.5L21 13v4h-5" />
+      <circle cx="7.5" cy="18.5" r="1.8" />
+      <circle cx="17.5" cy="18.5" r="1.8" />
+    </svg>
+  )
+}

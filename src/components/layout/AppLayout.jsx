@@ -23,7 +23,7 @@ export default function AppLayout() {
   const paginaAtual = PAGINAS.filter((p) => location.pathname.startsWith(p.path)).sort(
     (a, b) => b.path.length - a.path.length
   )[0]
-  const titulo = paginaAtual?.label || 'TNS Gestão de Entregas'
+  const titulo = paginaAtual?.label || 'Rastreamento de Reentrega'
 
   return (
     <div className="app-shell">

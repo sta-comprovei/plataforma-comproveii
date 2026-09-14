@@ -1,5 +1,5 @@
 /**
- * AuthContext.jsx — TNS Gestão de Entregas
+ * AuthContext.jsx — Rastreamento de Reentrega
  *
  * ──────────────────────────────────────────────────────────────────────────────
  * CAUSA RAIZ DO 403 — CONFIRMADA VIA DEVTOOLS (Authorization: Bearer = anon key)

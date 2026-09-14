@@ -1,6 +1,6 @@
 /**
  * lixeiraService.js
- * Service CENTRAL da Lixeira da plataforma TNS Gestão de Entregas.
+ * Service CENTRAL da Lixeira da plataforma Rastreamento de Reentrega.
  *
  * REGRA FUNDAMENTAL:
  *   Nenhuma tela executa DELETE diretamente.
@@ -31,6 +31,7 @@ export const MODULOS_LIXEIRA = [
   { valor: 'alteracoes_operacionais',     label: 'Alterações do Dia'       },
   { valor: 'prazo_rotas',                 label: 'Prazo de Rotas'          },
   { valor: 'usuarios',                    label: 'Usuários'                },
+  { valor: 'reentregas_notas',            label: 'Reentregas'              },
 ]
 
 export const LABEL_MODULO = Object.fromEntries(
@@ -157,6 +158,11 @@ export async function restaurarDaLixeira(itemLixeira) {
       // Restauração de usuário só é possível se o auth.users ainda existir
       // Caso contrário, instrui o admin a recriar o usuário
       const { error } = await supabase.from('usuarios').insert({ ...dados, id: registro_id })
+      erroRestauracao = error
+      break
+    }
+    case 'reentregas_notas': {
+      const { error } = await supabase.from('reentregas_notas').insert({ ...dados, id: registro_id })
       erroRestauracao = error
       break
     }

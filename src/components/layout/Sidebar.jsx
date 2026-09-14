@@ -23,6 +23,7 @@ import {
   IconTrash2,
   IconTarget,
   IconShield,
+  IconPackageSearch,
 } from '../ui/Icons'
 
 const ICONS = {
@@ -47,6 +48,7 @@ const ICONS = {
   lixeira:        IconTrash2,
   inteligencia:   IconTarget,
   pendencias_op:  IconAlert,
+  reentregas:     IconPackageSearch,
   governanca:     IconShield,
   rotas:          IconRoute,
   auditoria:      IconArchive,
@@ -71,7 +73,8 @@ export default function Sidebar({ open, onClose }) {
       <aside className={`sidebar${open ? ' open' : ''}`}>
         <div className="sidebar-logo">
           <img src={comproveiLogo} alt="COMPROVEI by nstech" />
-          <div className="sidebar-brand">TNS Gestão de Entregas</div>
+          <div className="sidebar-brand">Rastreamento de Reentrega</div>
+          <div className="sidebar-brand-by">By Giovanna Lopes · Comprovei Entregas</div>
         </div>
 
         <nav className="sidebar-nav">

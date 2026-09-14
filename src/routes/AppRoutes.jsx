@@ -4,6 +4,7 @@ import RedefinirSenha from '../pages/RedefinirSenha'
 import Dashboard from '../pages/Dashboard'
 import OperacaoDoDia from '../pages/OperacaoDoDia'
 import OperacoesPendentes from '../pages/OperacoesPendentes'
+import Reentregas from '../pages/Reentregas'
 import Motoristas from '../pages/Motoristas'
 import Historico from '../pages/Historico'
 import LeadTime from '../pages/LeadTime'
@@ -41,6 +42,7 @@ export default function AppRoutes() {
         <Route path="/inteligencia"            element={<RequireProfile><CentroInteligencia /></RequireProfile>} />
         <Route path="/operacao"                element={<RequireProfile><OperacaoDoDia /></RequireProfile>} />
         <Route path="/pendencias-operacionais" element={<RequireProfile><OperacoesPendentes /></RequireProfile>} />
+        <Route path="/reentregas"              element={<RequireProfile><Reentregas /></RequireProfile>} />
         <Route path="/motoristas"              element={<RequireProfile><Motoristas /></RequireProfile>} />
         <Route path="/historico"               element={<RequireProfile><Historico /></RequireProfile>} />
         <Route path="/leadtime"                element={<RequireProfile><LeadTime /></RequireProfile>} />

@@ -171,7 +171,7 @@ export default function AssistenteIA() {
   const [mensagens, setMensagens] = useState([
     {
       role: 'assistant',
-      content: 'Olá! Sou o Assistente Operacional da TNS. Tenho acesso aos dados reais do banco — operações de hoje, alertas, comunicados, registros do COMPROVEI, SLA e gargalos.\n\nComo posso ajudar?',
+      content: 'Olá! Sou o Assistente Operacional do Rastreamento de Reentrega. Tenho acesso aos dados reais do banco — operações de hoje, alertas, comunicados, registros do COMPROVEI, SLA e gargalos.\n\nComo posso ajudar?',
     },
   ])
   const [input, setInput]         = useState('')
@@ -214,7 +214,7 @@ export default function AssistenteIA() {
       const payload = {
         model:      'claude-sonnet-4-6',
         max_tokens: 1000,
-        system:     `Você é o Assistente Operacional da TNS Gestão de Entregas — plataforma logística que gerencia motoristas, rotas e entregas.
+        system:     `Você é o Assistente Operacional da Rastreamento de Reentrega — plataforma logística que gerencia motoristas, rotas e entregas.
 
 CONTEXTO REAL DO BANCO (atualizado agora):
 ${contexto}

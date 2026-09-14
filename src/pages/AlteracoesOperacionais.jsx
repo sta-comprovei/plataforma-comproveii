@@ -277,6 +277,8 @@ export default function AlteracoesOperacionais() {
   const [salvando, setSalvando]             = useState(false)
   const [erroModal, setErroModal]           = useState('')
   const [msgSucesso, setMsgSucesso]         = useState('')
+  const [confirmExclusao, setConfirmExclusao] = useState(null)
+  const [excluindo, setExcluindo]           = useState(false)
 
   // Filtros
   const [dataIni, setDataIni]         = useState('')

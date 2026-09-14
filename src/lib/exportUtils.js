@@ -175,7 +175,7 @@ ${subtitulo ? `<div class="subtitulo">${escaparHTML(subtitulo)}</div>` : ''}
 <thead><tr>${cabecalhoHTML}</tr></thead>
 <tbody>${linhasHTML}</tbody>
 </table>
-<div class="rodape">TNS Gestão de Entregas — gerado em ${new Date().toLocaleString('pt-BR')}</div>
+<div class="rodape">Rastreamento de Reentrega — gerado em ${new Date().toLocaleString('pt-BR')}</div>
 <script>
   window.onload = function () { window.print(); };
 </script>

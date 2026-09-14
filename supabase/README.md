@@ -1,4 +1,4 @@
-# Supabase — TNS Gestão de Entregas
+# Supabase — Rastreamento de Reentrega
 
 ## 1. Criar o projeto
 
@@ -10,19 +10,25 @@
 
 ## 2. Aplicar as migrations
 
-As migrations devem ser aplicadas **em ordem** (0001 → 0002 → 0003 → 0004 → 0005 → 0006 → 0007).
-Cada uma é incremental: apenas adiciona/ajusta o necessário, sem remover
-nada das anteriores.
+As migrations devem ser aplicadas **em ordem numérica**, do arquivo mais
+antigo ao mais recente (`0001_schema_inicial.sql` → ... → o último arquivo
+em `supabase/migrations/`). Cada uma é incremental: apenas adiciona/ajusta
+o necessário, sem remover nada das anteriores — todas usam `create table
+if not exists`, `create or replace function`, etc., então rodar uma
+migration que já foi aplicada antes não quebra nada.
 
-### Opção A — SQL Editor (mais simples)
+Se este é um projeto Supabase **novo** (primeira vez), rode todos os
+arquivos, na ordem, do 0001 até o mais recente. Se você já tinha esta
+plataforma rodando e só quer aplicar uma atualização (ex.: o módulo de
+Reentregas), rode apenas os arquivos novos que ainda não passaram pelo seu
+projeto — o nome do arquivo já diz sua posição.
+
+### Opção A — SQL Editor (mais simples, sem precisar de linha de comando)
 1. No painel do Supabase, abra **SQL Editor**.
-2. Cole o conteúdo de `supabase/migrations/0001_schema_inicial.sql` → **Run**.
-3. Em seguida, cole o conteúdo de `supabase/migrations/0002_motoristas_cpf_validacao.sql` → **Run**.
-4. Em seguida, cole o conteúdo de `supabase/migrations/0003_historico_auditoria.sql` → **Run**.
-5. Em seguida, cole o conteúdo de `supabase/migrations/0004_operacao_do_dia.sql` → **Run**.
-6. Em seguida, cole o conteúdo de `supabase/migrations/0005_lead_time.sql` → **Run**.
-7. Em seguida, cole o conteúdo de `supabase/migrations/0006_historico_operacional.sql` → **Run**.
-8. Por fim, cole o conteúdo de `supabase/migrations/0007_importacao_arquivos.sql` → **Run**.
+2. Abra cada arquivo de `supabase/migrations/`, na ordem numérica, cole o
+   conteúdo inteiro no editor e clique em **Run**. Confira que não apareceu
+   erro antes de passar para o próximo arquivo.
+3. Repita até chegar ao último arquivo da pasta.
 
 ### Opção B — Supabase CLI
 ```bash
@@ -48,6 +54,8 @@ supabase db push
 | Trigger `trg_metas_lead_time_before_write` | Preenche `usuario_ultima_alteracao` e `updated_at` a cada alteração de meta |
 | Trigger `trg_historico_importacoes_before_insert` | Preenche `usuario_id`/`nome_usuario` automaticamente a partir do usuário autenticado (mesmo padrão de `operacoes.usuario_criacao`) |
 | Trigger `trg_auditoria_motoristas` / `trg_auditoria_usuarios` / `trg_auditoria_operacoes` / `trg_auditoria_metas_lead_time` / `trg_auditoria_historico_importacoes` | Registra automaticamente toda criação/edição/inativação/reativação/exclusão em `historico_auditoria` |
+| `reentregas_notas` (migration 0027) | Reentregas por nota fiscal alinhadas pelo SAC com outro motorista — motorista anterior, motorista atual (nulo enquanto aguarda definição), observação e print opcional. Duas situações: `AGUARDANDO_MOTORISTA` e `REGISTRADA` |
+| Bucket de Storage `reentregas-prints` (migration 0027) | Bucket **privado** para os prints de conversa anexados às reentregas. O frontend nunca expõe uma URL pública fixa — sempre gera uma URL assinada temporária (`createSignedUrl`) na hora de exibir a imagem |
 | RLS | Habilitado em todas as tabelas — ver políticas no próprio arquivo SQL |
 
 Nenhum dado fictício, usuário de teste ou registro de exemplo é inserido por estes scripts. As 3 linhas de `metas_lead_time` são parâmetros de configuração do sistema (explicitamente citados no requisito da Etapa 4), não registros operacionais simulados — equivalentes aos valores fixos dos enums `tipo_operacao`/`status_operacao` já criados na migration 0001. A migration 0006 não insere nenhum dado — apenas recalcula (backfill cirúrgico, só nas linhas que realmente mudam) a classificação `ativa` de operações já existentes. A migration 0007 também não insere nenhum dado — as duas tabelas começam vazias, populadas apenas por importações reais realizadas pelos usuários.

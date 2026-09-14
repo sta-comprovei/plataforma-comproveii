@@ -1,9 +1,9 @@
 {
-  "name": "tns-gestao-entregas",
+  "name": "rastreamento-de-reentrega",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "TNS Gestão de Entregas — plataforma de monitoramento operacional de entregas (COMPROVEI by nstech)",
+  "description": "Rastreamento de Reentrega — plataforma de monitoramento operacional de entregas (COMPROVEI by nstech)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

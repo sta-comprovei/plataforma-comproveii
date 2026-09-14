@@ -49,6 +49,13 @@
   letter-spacing: 0.2px;
 }
 
+.login-brand-by {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  margin-top: -2px;
+}
+
 .login-heading {
   text-align: center;
   margin-bottom: 26px;

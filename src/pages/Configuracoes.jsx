@@ -40,7 +40,7 @@ export default function Configuracoes() {
         <div>
           <h2 style={{ fontSize: 17, fontWeight: 700, color: 'var(--text)' }}>Configurações</h2>
           <p style={{ fontSize: 12.5, color: 'var(--text3)' }}>
-            Área administrativa da plataforma TNS Gestão de Entregas.
+            Área administrativa da plataforma Rastreamento de Reentrega.
           </p>
         </div>
       </div>

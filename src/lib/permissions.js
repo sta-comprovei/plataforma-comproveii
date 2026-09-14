@@ -14,6 +14,7 @@ export const PAGINAS = [
   { path: '/inteligencia',            label: 'Centro de Inteligência',  icon: 'inteligencia',   perfis: [A, G] },
   { path: '/operacao',                label: 'Operação do Dia',         icon: 'operacao',       perfis: [A, G, O] },
   { path: '/pendencias-operacionais', label: 'Pendências Op.',          icon: 'pendencias_op',  perfis: [A, G, O] },
+  { path: '/reentregas',              label: 'Reentregas',              icon: 'reentregas',      perfis: [A, G, O] },
   { path: '/motoristas',              label: 'Motoristas',              icon: 'motoristas',     perfis: [A, G, O] },
   { path: '/historico',               label: 'Histórico',               icon: 'historico',      perfis: [A, G, O] },
   { path: '/leadtime',                label: 'Lead Time',               icon: 'leadtime',       perfis: [A, G, O] },

@@ -48,7 +48,8 @@ export default function RedefinirSenha() {
         <div className="login-brand">
           <img src={comproveiLogo} alt="COMPROVEI by nstech" />
           <span className="login-brand-transition">agora é</span>
-          <span className="login-brand-name">TNS Gestão de Entregas</span>
+          <span className="login-brand-name">Rastreamento de Reentrega</span>
+        <span className="login-brand-by">By Giovanna Lopes · Comprovei Entregas</span>
         </div>
 
         <div className="login-heading">
