@@ -1,0 +1,419 @@
+.hist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.hist-header h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.hist-header p {
+  font-size: 12.5px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* ---------- Cards de indicadores ---------- */
+.hist-indicadores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.hist-indicador-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  border-top: 3px solid var(--border);
+}
+
+.hist-indicador-card.total { border-top-color: var(--orange); }
+.hist-indicador-card.df { border-top-color: var(--orange); }
+.hist-indicador-card.adega { border-top-color: var(--blue); }
+.hist-indicador-card.filial { border-top-color: var(--purple); }
+.hist-indicador-card.leadtime { border-top-color: var(--green); }
+.hist-indicador-card.divergencia { border-top-color: var(--red); }
+
+.hist-indicador-label {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.hist-indicador-valor {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+
+/* ---------- Filtros ---------- */
+.hist-filters-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+
+.hist-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.hist-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.hist-field label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.hist-field input,
+.hist-field select {
+  padding: 9px 11px;
+  border-radius: var(--radius2);
+  border: 1.5px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+  min-width: 0;
+}
+
+.hist-field input:focus,
+.hist-field select:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.hist-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.hist-search-wrap svg {
+  position: absolute;
+  left: 11px;
+  width: 15px;
+  height: 15px;
+  color: var(--text4);
+  pointer-events: none;
+}
+
+.hist-search-wrap input {
+  width: 100%;
+  padding-left: 34px;
+}
+
+.hist-filters-actions {
+  display: flex;
+  align-items: end;
+}
+
+/* ---------- Tabela ---------- */
+.hist-table-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.hist-table-wrap {
+  overflow-x: auto;
+}
+
+.hist-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Larguras calibradas a partir de medição real dentro de uma tabela
+     real (mesmo método validado em OperacaoDoDia.css), reaproveitando
+     as larguras já confirmadas das colunas em comum (Data, Tipo, Rota,
+     Placa, Previstas, Realizadas, %, Status, Atualizado) e medindo as
+     2 colunas novas (Lead Time, Divergência). Soma:
+     117+75+135+104+125+140+74+126+187+160+118 + 190px mínimos para
+     "Motorista". */
+  min-width: 1551px;
+  table-layout: fixed;
+}
+
+.hist-table th:nth-child(1), .hist-table td:nth-child(1) { width: 117px; }              /* Data */
+.hist-table th:nth-child(2), .hist-table td:nth-child(2) { width: auto; min-width: 190px; } /* Motorista */
+.hist-table th:nth-child(3), .hist-table td:nth-child(3) { width: 75px; }               /* Tipo */
+.hist-table th:nth-child(4), .hist-table td:nth-child(4) { width: 135px; }              /* Rota */
+.hist-table th:nth-child(5), .hist-table td:nth-child(5) { width: 104px; }              /* Placa */
+.hist-table th:nth-child(6), .hist-table td:nth-child(6) { width: 125px; text-align: center; } /* Previstas */
+.hist-table th:nth-child(7), .hist-table td:nth-child(7) { width: 140px; text-align: center; } /* Realizadas */
+.hist-table th:nth-child(8), .hist-table td:nth-child(8) { width: 74px; text-align: center; }  /* % */
+.hist-table th:nth-child(9), .hist-table td:nth-child(9) { width: 126px; }              /* Lead Time */
+.hist-table th:nth-child(10), .hist-table td:nth-child(10) { width: 187px; }            /* Status */
+.hist-table th:nth-child(11), .hist-table td:nth-child(11) { width: 160px; }            /* Divergência */
+.hist-table th:nth-child(12), .hist-table td:nth-child(12) { width: 118px; }            /* Atualizado */
+
+.hist-table th {
+  background: var(--bg3);
+  color: var(--text3);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 10px 14px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.hist-table td {
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+  color: var(--text);
+  vertical-align: middle;
+}
+
+/*
+ * Colunas de conteúdo curto e previsível não devem quebrar linha —
+ * mesma lição já aplicada em Motoristas.css/OperacaoDoDia.css. Motorista
+ * (coluna 2, quebra para nomes longos) e Divergência (coluna 11, usa
+ * ellipsis próprio) são propositalmente excluídas desta regra.
+ */
+.hist-table td:nth-child(1),  /* Data */
+.hist-table td:nth-child(3),  /* Tipo */
+.hist-table td:nth-child(4),  /* Rota */
+.hist-table td:nth-child(5),  /* Placa */
+.hist-table td:nth-child(6),  /* Previstas */
+.hist-table td:nth-child(7),  /* Realizadas */
+.hist-table td:nth-child(8),  /* % */
+.hist-table td:nth-child(9),  /* Lead Time */
+.hist-table td:nth-child(10), /* Status */
+.hist-table td:nth-child(12) { /* Atualizado */
+  white-space: nowrap;
+}
+
+.hist-table tbody tr {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.hist-table tbody tr:hover td {
+  background: var(--orange-light);
+}
+
+.hist-codigo-cell {
+  font-family: 'SF Mono', 'Consolas', monospace;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.hist-motorista-cell {
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.hist-percentual-cell {
+  font-weight: 800;
+}
+
+.hist-percentual-alto { color: var(--green); }
+.hist-percentual-medio { color: var(--amber); }
+.hist-percentual-baixo { color: var(--red); }
+
+.hist-divergencia-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+  color: var(--red);
+  display: block;
+}
+
+.hist-atualizado-cell {
+  color: var(--text3);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+.hist-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text3);
+}
+
+.hist-empty svg {
+  width: 38px;
+  height: 38px;
+  color: var(--text4);
+  margin-bottom: 10px;
+}
+
+/* ---------- Cards (mobile) ---------- */
+.hist-cards {
+  display: none;
+}
+
+.hist-card {
+  padding: 13px 16px;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.hist-card:first-child {
+  border-top: none;
+}
+
+.hist-card:active {
+  background: var(--orange-light);
+}
+
+.hist-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.hist-card-motorista {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.hist-card-codigo {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+.hist-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+
+.hist-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12.5px;
+  margin-top: 4px;
+}
+
+.hist-card-divergencia {
+  margin-top: 6px;
+  font-size: 11.5px;
+  color: var(--red);
+  background: var(--red-bg);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+@media (max-width: 880px) {
+  .hist-table th:nth-child(12), .hist-table td:nth-child(12) { display: none; } /* Atualizado some no tablet */
+  .hist-table { min-width: 1433px; }
+}
+
+@media (max-width: 760px) {
+  .hist-table-wrap {
+    display: none;
+  }
+  .hist-cards {
+    display: block;
+  }
+  .hist-filters-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .hist-indicadores-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------- Modal de detalhe ---------- */
+.hist-detail-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin: 18px 0 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.hist-detail-section-title:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.hist-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+.hist-detail-item label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
+.hist-detail-item span {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.hist-detail-observacao {
+  margin-top: 6px;
+  padding: 10px 13px;
+  background: var(--bg3);
+  border-radius: var(--radius2);
+  font-size: 12.5px;
+  color: var(--text2);
+  white-space: pre-wrap;
+}
+
+.hist-auditoria-item {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.hist-auditoria-item:last-child {
+  border-bottom: none;
+}
