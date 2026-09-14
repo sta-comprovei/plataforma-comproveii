@@ -2,57 +2,10 @@ import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { paginasPermitidas } from '../../lib/permissions'
 import comproveiLogo from '../../assets/comprovei-logo.jpg'
-import {
-  IconDashboard,
-  IconClipboard,
-  IconTruck,
-  IconArchive,
-  IconClock,
-  IconAlert,
-  IconFileText,
-  IconUpload,
-  IconBot,
-  IconSettings,
-  IconLogout,
-  IconFunnel,
-  IconRoute,
-  IconMegaphone,
-  IconBell,
-  IconEdit,
-  IconTrendingUp,
-  IconTrash2,
-  IconTarget,
-  IconShield,
-  IconPackageSearch,
-} from '../ui/Icons'
+import { IconPackageSearch, IconLogout } from '../ui/Icons'
 
 const ICONS = {
-  dashboard:      IconDashboard,
-  operacao:       IconClipboard,
-  motoristas:     IconTruck,
-  historico:      IconArchive,
-  leadtime:       IconClock,
-  pendencias:     IconAlert,
-  relatorios:     IconFileText,
-  importacoes:    IconUpload,
-  funil:          IconFunnel,
-  gargalos:       IconClock,
-  prazorotas:     IconRoute,
-  comunicados:    IconMegaphone,
-  alertas:        IconBell,
-  alteracoes:     IconEdit,
-  assistente:     IconBot,
-  evolucao:       IconTrendingUp,
-  evolucaomensal: IconTrendingUp,
-  configuracoes:  IconSettings,
-  lixeira:        IconTrash2,
-  inteligencia:   IconTarget,
-  pendencias_op:  IconAlert,
-  reentregas:     IconPackageSearch,
-  governanca:     IconShield,
-  rotas:          IconRoute,
-  auditoria:      IconArchive,
-  usuarios:       IconShield,
+  reentregas: IconPackageSearch,
 }
 
 export default function Sidebar({ open, onClose }) {
@@ -101,7 +54,7 @@ export default function Sidebar({ open, onClose }) {
               <span className="sidebar-user-name">{usuario?.nome || usuario?.email}</span>
               <span className="sidebar-user-perfil" style={{
             textTransform:'capitalize', fontSize:11, padding:'1px 6px', borderRadius:10,
-            background: perfil==='administrador'?'var(--orange)': perfil==='gestor'?'#2563eb':'var(--green)',
+            background: perfil==='administrador'?'var(--orange)':'var(--green)',
             color:'#fff', fontWeight:700,
           }}>{perfil}</span>
             </div>

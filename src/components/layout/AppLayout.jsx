@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import { PAGINAS } from '../../lib/permissions'
@@ -8,18 +8,7 @@ import './AppLayout.css'
 export default function AppLayout() {
   const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [modoManutencao, setModoManutencao] = useState(() => sessionStorage.getItem('tns_modo_manutencao') === '1')
 
-  useEffect(() => {
-    function onM(e) { setModoManutencao(e.detail.ativo) }
-    window.addEventListener('manutencao', onM)
-    return () => window.removeEventListener('manutencao', onM)
-  }, [])
-
-  // Encontra a página mais ESPECÍFICA cujo path é prefixo da rota atual —
-  // não a primeira do array. Sem isso, '/configuracoes/auditoria' faria
-  // match com '/configuracoes' (que vem antes no array PAGINAS) e o
-  // topbar mostraria o título errado para a sub-página.
   const paginaAtual = PAGINAS.filter((p) => location.pathname.startsWith(p.path)).sort(
     (a, b) => b.path.length - a.path.length
   )[0]

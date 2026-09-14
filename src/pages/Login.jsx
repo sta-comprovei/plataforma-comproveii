@@ -19,7 +19,7 @@ export default function Login() {
 
   // Se já está autenticado, não faz sentido mostrar o login novamente.
   if (!carregandoSessao && autenticado) {
-    return <Navigate to="/dashboard" replace />
+    return <Navigate to="/reentregas" replace />
   }
 
   async function handleSubmit(e) {
@@ -40,7 +40,7 @@ export default function Login() {
       return
     }
 
-    navigate('/dashboard', { replace: true })
+    navigate('/reentregas', { replace: true })
   }
 
   if (modoRecuperar) {
@@ -52,9 +52,8 @@ export default function Login() {
       <div className="login-card">
         <div className="login-brand">
           <img src={comproveiLogo} alt="COMPROVEI by nstech" />
-          <span className="login-brand-transition">agora é</span>
           <span className="login-brand-name">Rastreamento de Reentrega</span>
-        <span className="login-brand-by">By Giovanna Lopes · Comprovei Entregas</span>
+          <span className="login-brand-by">By Giovanna Lopes · Comprovei Entregas</span>
         </div>
 
         <div className="login-heading">
@@ -160,9 +159,8 @@ function RecuperarSenhaView({ onVoltar, emailInicial }) {
       <div className="login-card">
         <div className="login-brand">
           <img src={comproveiLogo} alt="COMPROVEI by nstech" />
-          <span className="login-brand-transition">agora é</span>
           <span className="login-brand-name">Rastreamento de Reentrega</span>
-        <span className="login-brand-by">By Giovanna Lopes · Comprovei Entregas</span>
+          <span className="login-brand-by">By Giovanna Lopes · Comprovei Entregas</span>
         </div>
 
         <div className="login-heading">

@@ -220,7 +220,6 @@ export function AuthProvider({ children }) {
       erroPerfil,
       perfil: usuario?.perfil ?? null,
       isAdmin:    usuario?.perfil === 'administrador',
-      isGestor:   usuario?.perfil === 'gestor',
       isOperador: usuario?.perfil === 'operador',
       login,
       logout,

@@ -1,5 +1,4 @@
 import { supabase } from './supabaseClient'
-import { moverParaLixeira } from './lixeiraService'
 
 /**
  * Camada de acesso a dados do módulo Reentregas — notas fiscais que o SAC
@@ -157,24 +156,41 @@ export async function atribuirMotorista({ id, motoristaAnterior, motoristaAtual,
   return editarReentrega({ id, motoristaAnterior, motoristaAtual, observacao, printPath, printNomeArquivo, nomeUsuario })
 }
 
-// ── EXCLUIR (via lixeira, como o resto da plataforma) ───────────────────────
+// ── EXCLUIR ──────────────────────────────────────────────────────────────────
 
-export async function excluirReentrega(id, nomeUsuario) {
-  const { data: snapshot, error: errSnap } = await supabase.from(TABELA).select('*').eq('id', id).single()
-  if (errSnap) return { erro: mensagem(errSnap) }
-
-  const descricao = `Reentrega — Nota ${snapshot.nota_fiscal} (${snapshot.motorista_anterior}${snapshot.motorista_atual ? ` → ${snapshot.motorista_atual}` : ''})`
-  const { erro: errLix } = await moverParaLixeira('reentregas_notas', id, descricao, snapshot, nomeUsuario)
-  if (errLix) return { erro: errLix }
+export async function excluirReentrega(id) {
+  const { data: snapshot } = await supabase.from(TABELA).select('print_path').eq('id', id).single()
 
   const { error } = await supabase.from(TABELA).delete().eq('id', id)
   if (error) return { erro: mensagem(error) }
 
-  if (snapshot.print_path) {
+  if (snapshot?.print_path) {
     // Melhor esforço — não bloqueia a exclusão se a limpeza do arquivo falhar.
     supabase.storage.from(BUCKET).remove([snapshot.print_path]).catch(() => {})
   }
   return { erro: null }
+}
+
+// ── SUGESTÕES DE MOTORISTA (autocomplete) ────────────────────────────────────
+
+/**
+ * Sem cadastro próprio de motoristas nesta plataforma enxuta — as sugestões
+ * do autocomplete vêm dos nomes já digitados em reentregas anteriores.
+ */
+export async function listarMotoristasSugeridos() {
+  const { data, error } = await supabase
+    .from(TABELA)
+    .select('motorista_anterior, motorista_atual')
+    .order('created_at', { ascending: false })
+    .limit(300)
+  if (error) return []
+
+  const nomes = new Set()
+  for (const linha of data ?? []) {
+    if (linha.motorista_anterior) nomes.add(linha.motorista_anterior)
+    if (linha.motorista_atual) nomes.add(linha.motorista_atual)
+  }
+  return Array.from(nomes).sort((a, b) => a.localeCompare(b, 'pt-BR'))
 }
 
 // ── PRINT DA CONVERSA (opcional em qualquer fluxo) ──────────────────────────

@@ -8,22 +8,24 @@ site, tudo feito manualmente (painel do Supabase + upload no Netlify).
 
 1. Crie um projeto em [supabase.com](https://supabase.com) (se ainda não tiver um).
 2. Em **Project Settings → API**, copie o `Project URL` e a `anon public key`.
-3. Abra **SQL Editor** no painel do Supabase e rode, **um de cada vez, na
-   ordem numérica**, todos os arquivos da pasta `supabase/migrations/`
-   (`0001_schema_inicial.sql` até `0027_reentregas_notas.sql`, o mais
-   recente). Cole o conteúdo inteiro de cada arquivo e clique em **Run**
-   antes de passar para o próximo.
-   - Detalhes de cada tabela criada: veja `supabase/README.md`.
-   - A migration `0027` é a que traz a tela de **Reentregas** — cria a
-     tabela `reentregas_notas` e o bucket de storage privado
-     `reentregas-prints` (onde ficam os prints de conversa anexados).
+3. Abra **SQL Editor** no painel do Supabase e rode, **nesta ordem**, os
+   dois arquivos de `supabase/migrations/`:
+   1. `0001_schema_inicial.sql` — autenticação e perfis de usuário.
+   2. `0002_reentregas_notas.sql` — a tabela de reentregas e o bucket de
+      storage privado `reentregas-prints` (onde ficam os prints de
+      conversa anexados).
+   Cole o conteúdo inteiro de cada um e clique em **Run** antes de passar
+   para o próximo. Detalhes de cada tabela: veja `supabase/README.md`.
 4. Crie o primeiro usuário administrador:
-   - Em **Authentication → Users → Invite user** (ou habilite cadastro
-     conforme sua política), crie a conta com o e-mail que você vai usar.
+   - Em **Authentication → Users → Invite user**, crie a conta com o
+     e-mail que você vai usar.
    - Depois que a conta existir, rode no SQL Editor:
      ```sql
      update public.usuarios set perfil = 'administrador' where email = 'seu-email@exemplo.com';
      ```
+   - Para adicionar a equipe do SAC depois, repita o convite — cada conta
+     nasce como `operador` automaticamente (registra e edita, mas não
+     exclui reentregas).
 
 ## 2. Configurar as variáveis de ambiente locais
 
@@ -33,13 +35,6 @@ site, tudo feito manualmente (painel do Supabase + upload no Netlify).
    VITE_SUPABASE_URL=<Project URL copiado no passo 1>
    VITE_SUPABASE_ANON_KEY=<anon public key copiada no passo 1>
    ```
-3. (Opcional — só para o Assistente IA) Configure a chave da Anthropic como
-   **secret do Supabase** (nunca como variável do Netlify/frontend):
-   ```
-   supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
-   ```
-   Isso exige a Supabase CLI (`supabase login` / `supabase link`). Se você
-   não usa o Assistente IA agora, pode pular este passo.
 
 ## 3. Gerar o build
 
@@ -50,9 +45,7 @@ npm install
 npm run build
 ```
 
-Isso cria a pasta `dist/` — é ela que vai para o Netlify. (`npm install`
-precisa de acesso normal à internet, incluindo `cdn.sheetjs.com`, usado
-pela biblioteca de exportação para Excel.)
+Isso cria a pasta `dist/` — é ela que vai para o Netlify.
 
 ## 4. Publicar no Netlify — sem GitHub
 
@@ -86,7 +79,7 @@ Environment variables**.
 
 1. Acesse a URL que o Netlify gerou.
 2. Faça login com o usuário administrador criado no passo 1.4.
-3. Abra **Reentregas** no menu lateral:
+3. Você cai direto na tela **Reentregas**:
    - Aba **Reentregas registradas** → "Nova reentrega" → preencha
      nota fiscal, motorista anterior e atual, cole um print com `Ctrl+V`
      (opcional) → Salvar.
@@ -104,6 +97,6 @@ Environment variables**.
 - **"Row-level security" ao salvar algo**: normalmente é o usuário logado
   sem perfil `ativo = true` em `public.usuarios`, ou uma migration que não
   rodou. Confira a tabela `usuarios` no Supabase.
-- **Print não abre / erro ao anexar**: confirme que a migration `0027`
+- **Print não abre / erro ao anexar**: confirme que a migration `0002`
   rodou até o fim (ela cria o bucket `reentregas-prints`) — veja em
   **Storage** no painel do Supabase se o bucket existe.

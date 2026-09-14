@@ -5,7 +5,6 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
   // Falha alta e clara em vez de erros silenciosos de "fetch failed" depois.
-  // eslint-disable-next-line no-console
   console.error(
     '[Supabase] Variáveis de ambiente ausentes. Copie .env.example para .env.local ' +
       'e preencha VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.'

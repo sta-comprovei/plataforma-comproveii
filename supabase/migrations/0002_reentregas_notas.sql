@@ -1,5 +1,5 @@
 -- ============================================================================
--- Rastreamento de Reentrega — Migration 0027
+-- Rastreamento de Reentrega — Migration 0002
 -- Reentregas por nota fiscal, alinhadas pelo SAC com um novo motorista.
 -- ============================================================================
 -- Cada linha é UMA nota fiscal. O mesmo lote (várias notas repassadas pelo
@@ -17,8 +17,9 @@
 -- aponta para um objeto no bucket de storage 'reentregas-prints' (privado —
 -- o frontend gera signed URL sob demanda, nunca expõe o bucket publicamente).
 --
--- Sem DELETE físico direto: exclusão passa pela Lixeira central (0022),
--- igual ao resto da plataforma.
+-- Exclusão é física (com confirmação na tela) — não há lixeira nesta
+-- plataforma enxuta. `usuario_criacao`/`usuario_ultima_alteracao` guardam
+-- quem fez o quê diretamente na própria linha.
 -- ============================================================================
 
 create table if not exists public.reentregas_notas (
@@ -109,12 +110,6 @@ create trigger trg_reentregas_before_write
   before insert or update on public.reentregas_notas
   for each row execute function public.fn_reentregas_before_write();
 
--- ── Trigger de auditoria (reaproveita fn_registrar_auditoria de 0003) ───────
-drop trigger if exists trg_auditoria_reentregas on public.reentregas_notas;
-create trigger trg_auditoria_reentregas
-  after insert or update or delete on public.reentregas_notas
-  for each row execute function public.fn_registrar_auditoria();
-
 -- ── RLS ──────────────────────────────────────────────────────────────────────
 alter table public.reentregas_notas enable row level security;
 
@@ -135,8 +130,8 @@ create policy "reentregas_update"
   using (public.fn_estou_ativo())
   with check (public.fn_estou_ativo());
 
--- DELETE físico: só quem pode excluir (perfil administrador) — o service
--- sempre move para a lixeira (fn_mover_para_lixeira) antes de chamar isto.
+-- DELETE: só quem tem perfil administrador (a tela só mostra o botão de
+-- excluir para esse perfil, e a policy garante isso também no banco).
 drop policy if exists "reentregas_delete" on public.reentregas_notas;
 create policy "reentregas_delete"
   on public.reentregas_notas for delete
@@ -170,15 +165,11 @@ create policy "reentregas_prints_delete"
   to authenticated
   using (bucket_id = 'reentregas-prints' and public.fn_estou_ativo());
 
--- ── Lixeira: registra o módulo para o filtro da tela de Lixeira ────────────
--- (a tela de Lixeira lê os valores em src/lib/lixeiraService.js — nenhuma
--- alteração de schema é necessária aqui, a tabela lixeira já é genérica)
-
 -- ── Verificação ───────────────────────────────────────────────────────────────
 select 'reentregas_notas criada' as status, count(*) as politicas_rls
 from pg_policies
 where tablename = 'reentregas_notas';
 
 -- ============================================================================
--- Fim da migration 0027.
+-- Fim da migration 0002.
 -- ============================================================================

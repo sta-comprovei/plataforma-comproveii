@@ -17,7 +17,7 @@ export default function NotFound() {
       <h1 style={{ fontSize: 48, fontWeight: 800, color: 'var(--orange)' }}>404</h1>
       <p style={{ color: 'var(--text3)', fontSize: 14 }}>Página não encontrada.</p>
       <Link
-        to="/dashboard"
+        to="/reentregas"
         style={{
           marginTop: 8,
           padding: '9px 18px',
@@ -28,7 +28,7 @@ export default function NotFound() {
           fontSize: 13,
         }}
       >
-        Voltar ao Dashboard
+        Voltar para Reentregas
       </Link>
     </div>
   )

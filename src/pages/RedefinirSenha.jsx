@@ -39,7 +39,7 @@ export default function RedefinirSenha() {
     }
 
     setSucesso(true)
-    setTimeout(() => navigate('/dashboard', { replace: true }), 1800)
+    setTimeout(() => navigate('/reentregas', { replace: true }), 1800)
   }
 
   return (
@@ -47,9 +47,8 @@ export default function RedefinirSenha() {
       <div className="login-card">
         <div className="login-brand">
           <img src={comproveiLogo} alt="COMPROVEI by nstech" />
-          <span className="login-brand-transition">agora é</span>
           <span className="login-brand-name">Rastreamento de Reentrega</span>
-        <span className="login-brand-by">By Giovanna Lopes · Comprovei Entregas</span>
+          <span className="login-brand-by">By Giovanna Lopes · Comprovei Entregas</span>
         </div>
 
         <div className="login-heading">

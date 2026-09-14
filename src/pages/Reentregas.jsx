@@ -3,10 +3,9 @@ import { useAuth } from '../contexts/AuthContext'
 import { podeFazer } from '../lib/permissions'
 import {
   listarReentregas, criarReentregas, editarReentrega, atribuirMotorista, excluirReentrega,
-  contarReentregas, uploadPrint, obterUrlPrint, parseNotasFiscais,
+  contarReentregas, uploadPrint, obterUrlPrint, parseNotasFiscais, listarMotoristasSugeridos,
   STATUS_AGUARDANDO, STATUS_REGISTRADA,
 } from '../lib/reentregasService'
-import { listarMotoristas } from '../lib/motoristasService'
 import { useDebouncedValue } from '../lib/useDebouncedValue'
 import Button from '../components/ui/Button'
 import Pagination from '../components/ui/Pagination'
@@ -81,9 +80,7 @@ export default function Reentregas() {
   }, [feedback])
 
   useEffect(() => {
-    listarMotoristas({ situacao: 'ativo', porPagina: 500 }).then((r) => {
-      if (!r.erro) setMotoristasSugeridos(r.dados.map((m) => m.nome))
-    })
+    listarMotoristasSugeridos().then(setMotoristasSugeridos)
   }, [])
 
   async function handleVerPrint(item) {
@@ -152,12 +149,13 @@ export default function Reentregas() {
     if (modal.modo === 'atribuir') setPaginaAg(1)
     if (modal.modo === 'nova-registrada' || modal.modo === 'nova-aguardando') { setPaginaReg(1); setPaginaAg(1) }
     carregar()
+    listarMotoristasSugeridos().then(setMotoristasSugeridos)
   }
 
   async function handleExcluir() {
     if (!confirmExcluir) return
     setProcessando(true)
-    const { erro: e } = await excluirReentrega(confirmExcluir.id, nomeUsuario)
+    const { erro: e } = await excluirReentrega(confirmExcluir.id)
     setProcessando(false)
     setConfirmExcluir(null)
     if (e) { setFeedback({ tipo: 'erro', texto: e }); return }
