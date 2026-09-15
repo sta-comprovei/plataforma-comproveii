@@ -10,16 +10,24 @@
 
 ## 2. Aplicar as migrations
 
-Só duas, nessa ordem, no **SQL Editor** do painel do Supabase — cole o
-conteúdo inteiro de cada arquivo e clique em **Run** antes de passar para
-o próximo:
+Nessa ordem, no **SQL Editor** do painel do Supabase — cole o conteúdo
+inteiro de cada arquivo e clique em **Run** antes de passar para o
+próximo:
 
 1. `supabase/migrations/0001_schema_inicial.sql` — autenticação e perfis.
 2. `supabase/migrations/0002_reentregas_notas.sql` — a tabela de reentregas
    e o bucket de storage dos prints.
+3. `supabase/migrations/0003_perfil_visualizador_enum.sql` — adiciona o
+   perfil `visualizador` (somente leitura). **Rode sozinho**, sem colar
+   junto com o próximo arquivo (o comentário no topo do arquivo explica o
+   motivo).
+4. `supabase/migrations/0004_perfil_visualizador_rls.sql` — trava
+   criação/edição/exclusão para esse perfil.
 
-Ambas usam `create table if not exists` / `create or replace function`,
-então rodar de novo por engano não quebra nada.
+Todas usam `create table if not exists` / `create or replace function` /
+`add value if not exists`, então rodar de novo por engano não quebra nada
+(exceto o cuidado de rodar 0003 e 0004 em execuções separadas, explicado
+nos próprios arquivos).
 
 ### Opção B — Supabase CLI
 ```bash
@@ -32,7 +40,7 @@ supabase db push
 
 | Objeto | Descrição |
 |---|---|
-| `usuarios` | Perfil de cada conta (1:1 com `auth.users`) — `administrador` (acesso total, inclui excluir) ou `operador` (registra/edita, não exclui) |
+| `usuarios` | Perfil de cada conta (1:1 com `auth.users`) — `administrador` (acesso total, inclui excluir), `operador` (registra/edita, não exclui) ou `visualizador` (só enxerga as reentregas, não cria/edita/exclui nada) |
 | Trigger `trg_on_auth_user_created` | Cria a linha em `usuarios` automaticamente no signup/convite (perfil padrão: `operador`) |
 | `reentregas_notas` | Reentregas por nota fiscal alinhadas pelo SAC com outro motorista — motorista anterior, motorista atual (nulo enquanto aguarda definição), observação e print opcional. Duas situações: `AGUARDANDO_MOTORISTA` e `REGISTRADA` |
 | Bucket de Storage `reentregas-prints` | Bucket **privado** para os prints de conversa. O frontend nunca expõe uma URL pública fixa — sempre gera uma URL assinada temporária (`createSignedUrl`) na hora de exibir a imagem |
@@ -61,7 +69,21 @@ where email = 'email-do-admin@suaempresa.com';
 Para adicionar membros da equipe do SAC depois: **Authentication → Users →
 Invite user** de novo — a conta nasce como `operador` automaticamente.
 
-## 5. Autenticação
+## 5. Dar acesso somente leitura a alguém (perfil visualizador)
+
+Toda conta nasce `operador`. Para deixar alguém só olhando as reentregas
+(sem poder criar, editar ou excluir nada — nem os prints), rode:
+
+```sql
+update public.usuarios
+set perfil = 'visualizador'
+where email = 'email-da-pessoa@suaempresa.com';
+```
+
+Isso exige que as migrations `0003` e `0004` já tenham sido aplicadas
+(passo 2). Para reverter, basta rodar de novo com `perfil = 'operador'`.
+
+## 6. Autenticação
 
 Este projeto usa **exclusivamente o Supabase Authentication** (e-mail + senha).
 Para liberar a recuperação de senha, garanta que em **Authentication → URL

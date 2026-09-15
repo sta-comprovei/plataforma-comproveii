@@ -9,11 +9,15 @@ site, tudo feito manualmente (painel do Supabase + upload no Netlify).
 1. Crie um projeto em [supabase.com](https://supabase.com) (se ainda não tiver um).
 2. Em **Project Settings → API**, copie o `Project URL` e a `anon public key`.
 3. Abra **SQL Editor** no painel do Supabase e rode, **nesta ordem**, os
-   dois arquivos de `supabase/migrations/`:
+   arquivos de `supabase/migrations/`:
    1. `0001_schema_inicial.sql` — autenticação e perfis de usuário.
    2. `0002_reentregas_notas.sql` — a tabela de reentregas e o bucket de
       storage privado `reentregas-prints` (onde ficam os prints de
       conversa anexados).
+   3. `0003_perfil_visualizador_enum.sql` — **rode sozinho**, sem colar
+      junto com o próximo arquivo (veja o comentário no topo do arquivo).
+   4. `0004_perfil_visualizador_rls.sql` — trava criação/edição/exclusão
+      para o perfil visualizador.
    Cole o conteúdo inteiro de cada um e clique em **Run** antes de passar
    para o próximo. Detalhes de cada tabela: veja `supabase/README.md`.
 4. Crie o primeiro usuário administrador:
@@ -25,7 +29,8 @@ site, tudo feito manualmente (painel do Supabase + upload no Netlify).
      ```
    - Para adicionar a equipe do SAC depois, repita o convite — cada conta
      nasce como `operador` automaticamente (registra e edita, mas não
-     exclui reentregas).
+     exclui reentregas). Para dar acesso só de leitura a alguém, promova
+     para `visualizador` (veja `supabase/README.md`, seção 5).
 
 ## 2. Configurar as variáveis de ambiente locais
 

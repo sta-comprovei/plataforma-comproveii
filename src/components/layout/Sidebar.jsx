@@ -54,7 +54,7 @@ export default function Sidebar({ open, onClose }) {
               <span className="sidebar-user-name">{usuario?.nome || usuario?.email}</span>
               <span className="sidebar-user-perfil" style={{
             textTransform:'capitalize', fontSize:11, padding:'1px 6px', borderRadius:10,
-            background: perfil==='administrador'?'var(--orange)':'var(--green)',
+            background: perfil==='administrador'?'var(--orange)':perfil==='visualizador'?'var(--blue)':'var(--green)',
             color:'#fff', fontWeight:700,
           }}>{perfil}</span>
             </div>

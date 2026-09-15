@@ -2,13 +2,15 @@
 export const PERFIS = {
   ADMINISTRADOR: 'administrador',
   OPERADOR:      'operador',
+  VISUALIZADOR:  'visualizador', // só enxerga as reentregas — não cria, não edita, não exclui
 }
 
 const A = PERFIS.ADMINISTRADOR
 const O = PERFIS.OPERADOR
+const V = PERFIS.VISUALIZADOR
 
 export const PAGINAS = [
-  { path: '/reentregas', label: 'Reentregas', icon: 'reentregas', perfis: [A, O] },
+  { path: '/reentregas', label: 'Reentregas', icon: 'reentregas', perfis: [A, O, V] },
 ]
 
 export function paginasPermitidas(perfil) {
