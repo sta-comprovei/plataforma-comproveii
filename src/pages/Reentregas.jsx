@@ -90,65 +90,73 @@ export default function Reentregas() {
   }
 
   async function handleSalvar(valores) {
+    if (processando) return // trava de segurança: nunca processa dois cliques em paralelo
     setProcessando(true)
-    let printPath, printNomeArquivo
-    if (valores.printFile) {
-      const up = await uploadPrint(valores.printFile)
-      if (up.erro) { setProcessando(false); setFeedback({ tipo: 'erro', texto: up.erro }); return }
-      printPath = up.path
-      printNomeArquivo = valores.printFile.name
-    } else if (valores.printRemovido) {
-      printPath = null
-      printNomeArquivo = null
+    try {
+      let printPath, printNomeArquivo
+      if (valores.printFile) {
+        const up = await uploadPrint(valores.printFile)
+        if (up.erro) { setFeedback({ tipo: 'erro', texto: up.erro }); return }
+        printPath = up.path
+        printNomeArquivo = valores.printFile.name
+      } else if (valores.printRemovido) {
+        printPath = null
+        printNomeArquivo = null
+      }
+
+      let resultado
+      if (modal.modo === 'nova-registrada' || modal.modo === 'nova-aguardando') {
+        const notas = parseNotasFiscais(valores.notasTexto)
+        resultado = await criarReentregas({
+          notas,
+          motoristaAnterior: valores.motoristaAnterior,
+          motoristaAtual: modal.modo === 'nova-registrada' ? valores.motoristaAtual : '',
+          observacao: valores.observacao,
+          printPath: printPath || null,
+          printNomeArquivo,
+          nomeUsuario,
+        })
+      } else if (modal.modo === 'atribuir') {
+        resultado = await atribuirMotorista({
+          id: modal.item.id,
+          motoristaAnterior: valores.motoristaAnterior,
+          motoristaAtual: valores.motoristaAtual,
+          observacao: valores.observacao,
+          printPath, printNomeArquivo,
+          nomeUsuario,
+        })
+      } else if (modal.modo === 'editar') {
+        resultado = await editarReentrega({
+          id: modal.item.id,
+          motoristaAnterior: valores.motoristaAnterior,
+          motoristaAtual: valores.motoristaAtual,
+          observacao: valores.observacao,
+          printPath, printNomeArquivo,
+          removerPrint: valores.printRemovido,
+          nomeUsuario,
+        })
+      }
+
+      if (resultado?.erro) { setFeedback({ tipo: 'erro', texto: resultado.erro }); return }
+
+      let mensagemOk = 'Reentrega salva.'
+      if (modal.modo === 'nova-registrada') mensagemOk = `${parseNotasFiscais(valores.notasTexto).length} nota(s) registrada(s).`
+      else if (modal.modo === 'nova-aguardando') mensagemOk = `${parseNotasFiscais(valores.notasTexto).length} nota(s) registrada(s) aguardando motorista.`
+      else if (modal.modo === 'atribuir') mensagemOk = `Nota ${modal.item.nota_fiscal} movida para "Reentregas registradas".`
+      else if (modal.modo === 'editar') mensagemOk = `Nota ${modal.item.nota_fiscal} atualizada.`
+      setFeedback({ tipo: 'ok', texto: mensagemOk })
+      setModal(null)
+      if (modal.modo === 'atribuir') setPaginaAg(1)
+      if (modal.modo === 'nova-registrada' || modal.modo === 'nova-aguardando') { setPaginaReg(1); setPaginaAg(1) }
+      carregar()
+      listarMotoristasSugeridos().then(setMotoristasSugeridos)
+    } catch (e) {
+      // Rede de segurança: qualquer erro inesperado aqui não deixa a tela travada
+      // sem explicação — sempre mostra algo e libera o botão de novo.
+      setFeedback({ tipo: 'erro', texto: 'Não foi possível salvar. Tente novamente — ' + (e?.message || 'erro inesperado.') })
+    } finally {
+      setProcessando(false)
     }
-
-    let resultado
-    if (modal.modo === 'nova-registrada' || modal.modo === 'nova-aguardando') {
-      const notas = parseNotasFiscais(valores.notasTexto)
-      resultado = await criarReentregas({
-        notas,
-        motoristaAnterior: valores.motoristaAnterior,
-        motoristaAtual: modal.modo === 'nova-registrada' ? valores.motoristaAtual : '',
-        observacao: valores.observacao,
-        printPath: printPath || null,
-        printNomeArquivo,
-        nomeUsuario,
-      })
-    } else if (modal.modo === 'atribuir') {
-      resultado = await atribuirMotorista({
-        id: modal.item.id,
-        motoristaAnterior: valores.motoristaAnterior,
-        motoristaAtual: valores.motoristaAtual,
-        observacao: valores.observacao,
-        printPath, printNomeArquivo,
-        nomeUsuario,
-      })
-    } else if (modal.modo === 'editar') {
-      resultado = await editarReentrega({
-        id: modal.item.id,
-        motoristaAnterior: valores.motoristaAnterior,
-        motoristaAtual: valores.motoristaAtual,
-        observacao: valores.observacao,
-        printPath, printNomeArquivo,
-        removerPrint: valores.printRemovido,
-        nomeUsuario,
-      })
-    }
-
-    setProcessando(false)
-    if (resultado?.erro) { setFeedback({ tipo: 'erro', texto: resultado.erro }); return }
-
-    let mensagemOk = 'Reentrega salva.'
-    if (modal.modo === 'nova-registrada') mensagemOk = `${parseNotasFiscais(valores.notasTexto).length} nota(s) registrada(s).`
-    else if (modal.modo === 'nova-aguardando') mensagemOk = `${parseNotasFiscais(valores.notasTexto).length} nota(s) registrada(s) aguardando motorista.`
-    else if (modal.modo === 'atribuir') mensagemOk = `Nota ${modal.item.nota_fiscal} movida para "Reentregas registradas".`
-    else if (modal.modo === 'editar') mensagemOk = `Nota ${modal.item.nota_fiscal} atualizada.`
-    setFeedback({ tipo: 'ok', texto: mensagemOk })
-    setModal(null)
-    if (modal.modo === 'atribuir') setPaginaAg(1)
-    if (modal.modo === 'nova-registrada' || modal.modo === 'nova-aguardando') { setPaginaReg(1); setPaginaAg(1) }
-    carregar()
-    listarMotoristasSugeridos().then(setMotoristasSugeridos)
   }
 
   async function handleExcluir() {
