@@ -138,13 +138,12 @@ export default function Reentregas() {
     setProcessando(false)
     if (resultado?.erro) { setFeedback({ tipo: 'erro', texto: resultado.erro }); return }
 
-    const mensagens = {
-      'nova-registrada': `${parseNotasFiscais(valores.notasTexto).length} nota(s) registrada(s).`,
-      'nova-aguardando': `${parseNotasFiscais(valores.notasTexto).length} nota(s) registrada(s) aguardando motorista.`,
-      atribuir: `Nota ${modal.item.nota_fiscal} movida para "Reentregas registradas".`,
-      editar: `Nota ${modal.item.nota_fiscal} atualizada.`,
-    }
-    setFeedback({ tipo: 'ok', texto: mensagens[modal.modo] })
+    let mensagemOk = 'Reentrega salva.'
+    if (modal.modo === 'nova-registrada') mensagemOk = `${parseNotasFiscais(valores.notasTexto).length} nota(s) registrada(s).`
+    else if (modal.modo === 'nova-aguardando') mensagemOk = `${parseNotasFiscais(valores.notasTexto).length} nota(s) registrada(s) aguardando motorista.`
+    else if (modal.modo === 'atribuir') mensagemOk = `Nota ${modal.item.nota_fiscal} movida para "Reentregas registradas".`
+    else if (modal.modo === 'editar') mensagemOk = `Nota ${modal.item.nota_fiscal} atualizada.`
+    setFeedback({ tipo: 'ok', texto: mensagemOk })
     setModal(null)
     if (modal.modo === 'atribuir') setPaginaAg(1)
     if (modal.modo === 'nova-registrada' || modal.modo === 'nova-aguardando') { setPaginaReg(1); setPaginaAg(1) }
